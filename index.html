@@ -533,6 +533,20 @@
         errorBox.classList.add('show'); return;
       }
       var entry = { email: email, plan: planSelect ? planSelect.value : 'Not sure yet', at: new Date().toISOString() };
+      // Real email capture via FormSubmit (no account needed) — fire-and-forget, local UX unchanged.
+      try{
+        fetch('https://formsubmit.co/ajax/lucasxu969@gmail.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            plan: entry.plan,
+            _subject: 'New NudgePay waitlist signup: ' + email,
+            _template: 'table',
+            _captcha: 'false'
+          })
+        }).catch(function(){});
+      }catch(err){}
       waitlist.push(entry);
       updateCounters();
       form.querySelector('.success-email').textContent = email;
