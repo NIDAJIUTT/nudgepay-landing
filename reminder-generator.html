@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Payment Reminder Generator — Polite to Firm Invoice Chasers | NudgePay</title>
+<meta name="description" content="Free payment reminder generator: enter your invoice details, pick a tone — friendly, firm, or final notice — and get a polished, copy-ready payment reminder email in one click. No sign-up, no email wall.">
+<link rel="canonical" href="https://nidajiutt.github.io/nudgepay-landing/reminder-generator.html">
+<meta property="og:title" content="Free Payment Reminder Generator — Polite to Firm Invoice Chasers | NudgePay">
+<meta property="og:description" content="Generate a polished payment reminder email in one click. Pick your tone — friendly, firm, or final notice — and copy it straight into your inbox.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFCF5; --bg2:#F3EFE3; --surface:#FFFFFF; --ink:#182420; --ink2:#3E4F45;
+  --muted:#6B7D70; --line:#E6DDC8; --line2:#D9CDB0; --teal:#0C6B5E; --teal-dark:#084F45;
+  --teal-soft:#E3F0EB; --amber:#B45309; --amber-soft:#FDF0DC; --gold:#E9B44C; --radius:18px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#101613; --bg2:#161C19; --surface:#1A211D; --ink:#E9EFE9; --ink2:#B9C6BB;
+    --muted:#8CA093; --line:#2B352E; --line2:#3A463D; --teal:#3EC9B2; --teal-dark:#8FE3D2;
+    --teal-soft:#17352F; --amber:#E8A558; --amber-soft:#3A2C17; --gold:#E9B44C;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Public Sans",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.65}
+h1,h2,h3{font-family:"Lora",Georgia,serif;line-height:1.25;margin:0 0 .5em}
+h1{font-size:2.25rem;font-weight:700}
+h2{font-size:1.55rem;font-weight:600;margin-top:2.2em}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0 0 1em}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+nav.site{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.site .inner{max-width:960px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{font-family:"Lora",Georgia,serif;font-weight:700;font-size:1.25rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
+.brand .dot{width:11px;height:11px;border-radius:50%;background:var(--teal);flex:none}
+nav.site .links{margin-left:auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+nav.site .links a{color:var(--ink2);text-decoration:none;font-size:.95rem;font-weight:500}
+nav.site .links a:hover{color:var(--teal)}
+.btn{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:600;padding:9px 18px;border-radius:999px;font-size:.95rem;border:none;cursor:pointer}
+.btn:hover{background:var(--teal-dark)}
+@media (prefers-color-scheme: dark){.btn{color:#0B1512}}
+.breadcrumb{font-size:.9rem;color:var(--muted);margin:28px 0 10px}
+.breadcrumb a{color:var(--muted);text-decoration:none}
+.breadcrumb a:hover{color:var(--teal)}
+.dateline{color:var(--muted);font-size:.9rem;margin-bottom:24px}
+.lede{font-size:1.12rem;color:var(--ink2)}
+.tpl{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin:22px 0;box-shadow:0 1px 3px rgba(24,36,32,.05)}
+.tpl-label{display:inline-block;background:var(--teal-soft);color:var(--teal-dark);font-size:.8rem;font-weight:700;letter-spacing:.02em;padding:4px 12px;border-radius:999px;margin-bottom:12px}
+@media (prefers-color-scheme: dark){.tpl-label{color:var(--teal)}}
+.tpl h3{margin-top:0}
+.tpl-subject{font-weight:600;margin-bottom:8px;color:var(--ink)}
+.tpl-body{white-space:pre-wrap;font-family:inherit;font-size:.97rem;line-height:1.6;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 14px;color:var(--ink)}
+.tpl-note{font-size:.92rem;color:var(--muted);margin:0 0 14px}
+.copy-btn{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:.92rem;font-weight:600;cursor:pointer;font-family:inherit}
+.copy-btn:hover{background:var(--teal-dark)}
+@media (prefers-color-scheme: dark){.copy-btn{color:#0B1512}}
+.callout{background:var(--amber-soft);border:1px solid var(--line2);border-radius:var(--radius);padding:18px 22px;margin:22px 0}
+.callout p:last-child{margin-bottom:0}
+details{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:10px 0;padding:4px 18px}
+details summary{cursor:pointer;font-weight:600;padding:12px 0;font-family:"Lora",Georgia,serif;font-size:1.05rem}
+details p{color:var(--ink2);padding-bottom:12px}
+.waitlist{background:var(--teal-soft);border:1px solid var(--line);border-radius:var(--radius);padding:34px 26px;margin:48px 0 8px;text-align:center}
+.waitlist h2{margin-top:0}
+.waitlist p{color:var(--ink2);max-width:520px;margin-left:auto;margin-right:auto}
+.waitlist form{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.waitlist input[type=email]{flex:1 1 260px;max-width:340px;padding:12px 16px;border:1px solid var(--line2);border-radius:10px;font-size:1rem;font-family:inherit;background:var(--surface);color:var(--ink)}
+.waitlist button{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+.waitlist button:hover{background:var(--teal-dark)}
+@media (prefers-color-scheme: dark){.waitlist button{color:#0B1512}}
+.form-msg{margin-top:14px;font-weight:600;color:var(--teal-dark);min-height:1.4em}
+@media (prefers-color-scheme: dark){.form-msg{color:var(--teal)}}
+footer{border-top:1px solid var(--line);margin-top:56px;padding:28px 0 40px;color:var(--muted);font-size:.92rem}
+footer nav{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+footer nav a{color:var(--ink2);text-decoration:none}
+footer nav a:hover{color:var(--teal)}
+.gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 4px}
+.gen-field{display:flex;flex-direction:column;gap:6px}
+.gen-field.full{grid-column:1/-1}
+.gen-field label{font-size:.88rem;font-weight:600;color:var(--ink2)}
+.gen-field input{padding:11px 14px;border:1px solid var(--line2);border-radius:10px;font-size:1rem;font-family:inherit;background:var(--surface);color:var(--ink);width:100%}
+.gen-field input:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+.tone-group{display:flex;gap:8px;flex-wrap:wrap}
+.tone-group label{flex:1 1 130px;cursor:pointer}
+.tone-group input{position:absolute;opacity:0;pointer-events:none}
+.tone-pill{display:block;text-align:center;padding:11px 10px;border:1px solid var(--line2);border-radius:10px;font-size:.95rem;font-weight:600;color:var(--ink2);background:var(--surface);transition:all .15s}
+.tone-group input:checked + .tone-pill{background:var(--teal);border-color:var(--teal);color:#fff}
+@media (prefers-color-scheme: dark){.tone-group input:checked + .tone-pill{color:#0B1512}}
+.gen-btn{width:100%;margin-top:18px;background:var(--teal);color:#fff;border:none;border-radius:10px;padding:14px 24px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit}
+.gen-btn:hover{background:var(--teal-dark)}
+@media (prefers-color-scheme: dark){.gen-btn{color:#0B1512}}
+.gen-result{display:none}
+.gen-result.show{display:block}
+@media (max-width:560px){
+  h1{font-size:1.8rem}
+  .copy-btn{width:100%}
+  .gen-grid{grid-template-columns:1fr}
+  .waitlist form{flex-direction:column;align-items:stretch}
+  .waitlist input[type=email]{max-width:none}
+  .waitlist button{width:100%}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "NudgePay Payment Reminder Generator",
+      "description": "Free payment reminder generator: enter your invoice details, pick a tone — friendly, firm, or final notice — and get a polished, copy-ready payment reminder email in one click.",
+      "url": "https://nidajiutt.github.io/nudgepay-landing/reminder-generator.html",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Organization", "name": "NudgePay" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "When should I send the first payment reminder?", "acceptedAnswer": { "@type": "Answer", "text": "For most invoices, a friendly heads-up 2–3 days before the due date works best — it catches invoices that landed at a bad moment before they become late. If the due date has already passed, send the first (still friendly) reminder the day you notice, then escalate at 7 and 14 days overdue." } },
+        { "@type": "Question", "name": "What should a payment reminder email include?", "acceptedAnswer": { "@type": "Answer", "text": "Four things, every time: the invoice number, the exact amount, the original due date, and one clear way to pay. Vague reminders about 'that invoice' get ignored; specific ones get forwarded to whoever can actually pay them. Adding your name and business name keeps it personal and professional." } },
+        { "@type": "Question", "name": "How do I make a reminder firmer without damaging the relationship?", "acceptedAnswer": { "@type": "Answer", "text": "Change the structure, not the temperature. A firm reminder stays polite but asks for a specific commitment ('please confirm the payment date today') and names a real consequence, such as pausing work or applying the late fee in your agreement. Courtesy plus a deadline reads as professional; sarcasm or guilt trips read as personal." } },
+        { "@type": "Question", "name": "Can I automate payment reminders instead of writing them by hand?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — that's exactly what NudgePay is being built for. Instead of generating one reminder at a time, it sends the whole polite-to-firm sequence automatically on schedule, each message with a Pay Now link, and you approve every email before it goes out. The generator above is the free manual version of the first step." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<nav class="site">
+  <div class="inner">
+    <a class="brand" href="index.html"><span class="dot"></span>NudgePay</a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="reminder-generator.html">Generator</a>
+      <a href="payment-reminder-email-templates.html">Templates</a>
+      <a href="client-not-paying-invoice.html">Playbook</a>
+      <a href="how-to-ask-for-payment-politely.html">Scripts</a>
+      <a class="btn" href="#waitlist">Join waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+<article>
+<p class="breadcrumb"><a href="index.html">← NudgePay home</a> · Free tool</p>
+<h1>Free Payment Reminder Generator</h1>
+<p class="dateline">Free · No sign-up · Your details never leave your browser</p>
+
+<p class="lede">Staring at a blank email, trying to sound polite about money you're owed? Fill in four fields, pick how firm you want to be, and get a polished, copy-ready reminder in one click. Friendly, firm, or final notice — the wording is already handled.</p>
+
+<div class="tpl">
+  <span class="tpl-label">Step 1 — your invoice details</span>
+  <div class="gen-grid">
+    <div class="gen-field">
+      <label for="f-client">Client name</label>
+      <input type="text" id="f-client" value="Sarah" placeholder="e.g. Sarah from Acme Co" autocomplete="off">
+    </div>
+    <div class="gen-field">
+      <label for="f-invoice">Invoice number</label>
+      <input type="text" id="f-invoice" value="INV-1042" placeholder="e.g. INV-1042" autocomplete="off">
+    </div>
+    <div class="gen-field">
+      <label for="f-amount">Amount owed</label>
+      <input type="text" id="f-amount" value="1250" placeholder="e.g. 1250" inputmode="decimal" autocomplete="off">
+    </div>
+    <div class="gen-field">
+      <label for="f-duedate">Due date</label>
+      <input type="date" id="f-duedate">
+    </div>
+    <div class="gen-field">
+      <label for="f-days">Days overdue (optional — overrides due date)</label>
+      <input type="number" id="f-days" min="0" max="999" placeholder="e.g. 7" autocomplete="off">
+    </div>
+    <div class="gen-field">
+      <label for="f-sender">Your name / business</label>
+      <input type="text" id="f-sender" value="Alex" placeholder="e.g. Alex, Bright Studio" autocomplete="off">
+    </div>
+    <div class="gen-field full">
+      <label>How firm should it sound?</label>
+      <div class="tone-group" role="radiogroup" aria-label="Reminder tone">
+        <label><input type="radio" name="tone" value="friendly" checked><span class="tone-pill">🙂 Friendly</span></label>
+        <label><input type="radio" name="tone" value="firm"><span class="tone-pill">💼 Firm</span></label>
+        <label><input type="radio" name="tone" value="final"><span class="tone-pill">⚠️ Final notice</span></label>
+      </div>
+    </div>
+  </div>
+  <button class="gen-btn" id="generate-btn" type="button">Generate my reminder</button>
+</div>
+
+<div class="tpl gen-result" id="result-card">
+  <span class="tpl-label" id="result-label">Step 2 — your reminder</span>
+  <h3>Copy it, paste it, send it</h3>
+  <p class="tpl-subject" id="result-subject"></p>
+  <pre class="tpl-body" id="result-body"></pre>
+  <p class="tpl-note">Tip: send it as a reply to the original invoice email — the full thread gives your client (and their accounts team) all the context in one place.</p>
+  <button class="copy-btn" id="copy-btn" type="button">Copy email</button>
+</div>
+
+<h2>How the tone ladder works</h2>
+<p>One reminder rarely does the job — a <em>sequence</em> does. Professional chasers escalate gradually, and each tone in this generator matches a stage of that ladder:</p>
+<p><strong>Friendly</strong> is for invoices that just came due (or are a few days late). It assumes the best: the invoice slipped through the cracks. Most "late" payments are fixed at this stage, because most lateness is forgetfulness, not refusal.</p>
+<p><strong>Firm</strong> is for one-to-two-weeks overdue, especially if your friendly note got silence. The wording stays courteous but asks for a specific commitment — a confirmed payment date, today — and mentions that earlier reminders went unanswered. Silence stops being a free option.</p>
+<p><strong>Final notice</strong> is for 30 days and beyond. It's short, documentary, and names a hard deadline plus the next step (formal demand, third-party collection). Write it like it may be read later by a mediator — because it may.</p>
+<p>Want the full set of wordings for every stage? The <a href="payment-reminder-email-templates.html">six copy-paste templates</a> cover the whole arc, and the <a href="client-not-paying-invoice.html">client-not-paying playbook</a> walks through what to do when even the final notice is ignored.</p>
+
+<div class="callout">
+  <h3>Make any reminder stronger in 10 seconds</h3>
+  <p><strong>Quote the facts.</strong> Invoice number, exact amount, original due date — every single time. Specific reminders get filed, forwarded, and paid.</p>
+  <p><strong>One ask.</strong> End with exactly one next step: pay this invoice. Three possible actions means your client picks none of them.</p>
+  <p><strong>Send it today.</strong> A reminder sent a week late trains clients that your due dates are soft. The best reminder is the one that actually goes out.</p>
+</div>
+
+<h2>Frequently asked questions</h2>
+
+<details>
+  <summary>When should I send the first payment reminder?</summary>
+  <p>For most invoices, a friendly heads-up 2–3 days <em>before</em> the due date works best — it catches invoices that landed at a bad moment before they ever become late. If the due date has already passed, send the first (still friendly) reminder the day you notice, then escalate at 7 and 14 days overdue. The generator's Friendly tone is written to work for both moments.</p>
+</details>
+
+<details>
+  <summary>What should a payment reminder email include?</summary>
+  <p>Four things, every time: the invoice number, the exact amount, the original due date, and one clear way to pay. Vague reminders about "that invoice" get ignored; specific ones get forwarded to whoever can actually pay them. Signing with your real name and business name keeps it personal and professional — people pay people faster than they pay logos.</p>
+</details>
+
+<details>
+  <summary>How do I make a reminder firmer without damaging the relationship?</summary>
+  <p>Change the structure, not the temperature. A firm reminder stays polite but asks for a specific commitment — "please confirm the payment date today" — and names a real consequence, such as pausing work or applying the late fee already in your agreement. Courtesy plus a deadline reads as professional; sarcasm or guilt trips read as personal, and personal is what damages relationships.</p>
+</details>
+
+<details>
+  <summary>Can I automate payment reminders instead of writing them by hand?</summary>
+  <p>Yes — that's exactly what NudgePay is being built for. Instead of generating one reminder at a time, it sends the whole polite-to-firm sequence automatically on schedule, with a Pay Now link in every message, and you approve each email before it goes out. The generator above is the free manual version of the first step.</p>
+</details>
+
+<section class="waitlist" id="waitlist">
+  <h2>One reminder down. Now imagine never writing one again.</h2>
+  <p>This generator writes one reminder. NudgePay sends the whole sequence automatically — polite to firm — so you never have to chase again. Join the waitlist for early access.</p>
+  <form id="waitlist-form">
+    <input type="email" id="waitlist-email" placeholder="you@example.com" required aria-label="Email address">
+    <button type="submit">Join the waitlist</button>
+  </form>
+  <p class="form-msg" id="form-msg"></p>
+</section>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="reminder-generator.html">Payment Reminder Generator</a>
+      <a href="payment-reminder-email-templates.html">Payment Reminder Templates</a>
+      <a href="client-not-paying-invoice.html">Client Not Paying? Playbook</a>
+      <a href="how-to-ask-for-payment-politely.html">Ask for Payment Politely</a>
+    </nav>
+    <p>© 2026 NudgePay</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var dueInput = document.getElementById('f-duedate');
+  // Sensible default: an invoice that came due 7 days ago.
+  var d = new Date(); d.setDate(d.getDate() - 7);
+  function toISO(dt){ return dt.toISOString().slice(0,10); }
+  dueInput.value = toISO(d);
+
+  function fmtDate(dt){
+    return dt.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  }
+  function fmtAmount(raw){
+    var v = (raw || '').trim();
+    if(!v) return '$0';
+    var hasSymbol = /[$€£¥]/.test(v);
+    var num = parseFloat(v.replace(/[^0-9.]/g, ''));
+    if(isNaN(num)) return v;
+    var body = num.toLocaleString('en-US', { minimumFractionDigits: (num % 1 ? 2 : 0), maximumFractionDigits: 2 });
+    return hasSymbol ? v : '$' + body;
+  }
+  function getDaysOverdue(){
+    var daysField = document.getElementById('f-days').value.trim();
+    if(daysField !== ''){
+      var n = parseInt(daysField, 10);
+      if(!isNaN(n)) return n;
+    }
+    if(dueInput.value){
+      var due = new Date(dueInput.value + 'T00:00:00');
+      var now = new Date(); now.setHours(0,0,0,0);
+      return Math.round((now - due) / 86400000);
+    }
+    return 0;
+  }
+
+  function buildReminder(){
+    var client = document.getElementById('f-client').value.trim() || 'there';
+    var invoice = document.getElementById('f-invoice').value.trim() || 'INV-0000';
+    var amount = fmtAmount(document.getElementById('f-amount').value);
+    var sender = document.getElementById('f-sender').value.trim() || 'Me';
+    var tone = document.querySelector('input[name="tone"]:checked').value;
+    var days = getDaysOverdue();
+    var dueDate = dueInput.value ? fmtDate(new Date(dueInput.value + 'T00:00:00')) : 'the due date';
+    var deadline = new Date(); deadline.setDate(deadline.getDate() + 7);
+    var deadlineStr = fmtDate(deadline);
+    var subject, body;
+
+    if(tone === 'friendly'){
+      if(days <= 0){
+        subject = 'Friendly reminder — Invoice #' + invoice + ' (' + amount + ') due ' + dueDate;
+        body = 'Hi ' + client + ',\n\n' +
+          'Just a friendly heads-up that Invoice #' + invoice + ' for ' + amount + ' is coming due on ' + dueDate + '. I wanted to make sure it landed on your radar before the date sneaks up.\n\n' +
+          'If you have any questions about the invoice, just reply to this email and I\'ll sort it out right away. And if payment is already scheduled — thank you, no need to reply.\n\n' +
+          'Thanks so much,\n\n' + sender;
+      } else {
+        subject = 'Friendly reminder — Invoice #' + invoice + ' for ' + amount;
+        body = 'Hi ' + client + ',\n\n' +
+          'I hope you\'re doing well. I\'m writing with a friendly nudge about Invoice #' + invoice + ' for ' + amount + ', which was due on ' + dueDate + ' — it may simply have slipped through the cracks.\n\n' +
+          'Could you take a quick look when you get a moment? If payment is already on its way, thank you — please ignore this note. If something on the invoice looks off, just reply and I\'ll fix it right away.\n\n' +
+          'Many thanks,\n\n' + sender;
+      }
+    } else if(tone === 'firm'){
+      var overduePhrase = days > 0 ? 'is now ' + days + ' day' + (days === 1 ? '' : 's') + ' overdue' : 'was due on ' + dueDate;
+      subject = 'Invoice #' + invoice + ' ' + (days > 0 ? 'is ' + days + ' days overdue' : 'is overdue') + ' — ' + amount;
+      body = 'Hi ' + client + ',\n\n' +
+        'Following up on Invoice #' + invoice + ' for ' + amount + ', which was due on ' + dueDate + ' and ' + overduePhrase + '. I haven\'t received payment yet, and my earlier reminder didn\'t get a reply, so I wanted to check in directly.\n\n' +
+        'If payment is already in progress, please confirm the date it was sent. If something is holding it up, please let me know today so we can get it resolved. Otherwise, I\'d appreciate payment this week.\n\n' +
+        'Thank you for your attention to this,\n\n' + sender;
+    } else {
+      subject = 'Final notice — Invoice #' + invoice + ' for ' + amount;
+      body = 'Hi ' + client + ',\n\n' +
+        'This is a final notice regarding Invoice #' + invoice + ' for ' + amount + ', originally due on ' + dueDate + (days > 0 ? ' and now ' + days + ' days overdue' : '') + '. Despite several reminders, payment has not been received.\n\n' +
+        'Please arrange payment in full by ' + deadlineStr + '.\n\n' +
+        'If payment is not received by that date, I will need to consider my options for recovering the amount, which may include a formal demand and third-party collection. If you have already paid, please send proof of payment so I can update my records.\n\n' +
+        sender;
+    }
+    return { subject: subject, body: body, tone: tone };
+  }
+
+  function render(){
+    var r = buildReminder();
+    document.getElementById('result-subject').textContent = 'Subject: ' + r.subject;
+    document.getElementById('result-body').textContent = r.body;
+    var labels = { friendly: 'Your reminder — Friendly', firm: 'Your reminder — Firm', final: 'Your reminder — Final notice' };
+    document.getElementById('result-label').textContent = labels[r.tone];
+    var card = document.getElementById('result-card');
+    card.classList.add('show');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Stash the full copy-ready text (subject + body).
+    card.setAttribute('data-full', 'Subject: ' + r.subject + '\n\n' + r.body);
+  }
+
+  document.getElementById('generate-btn').addEventListener('click', render);
+  ['f-client','f-invoice','f-amount','f-duedate','f-days','f-sender'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', function(){
+      if(document.getElementById('result-card').classList.contains('show')) render();
+    });
+  });
+  document.querySelectorAll('input[name="tone"]').forEach(function(radio){
+    radio.addEventListener('change', function(){
+      if(document.getElementById('result-card').classList.contains('show')) render();
+    });
+  });
+
+  // Show a generated example immediately so the tool works the second the page loads.
+  render();
+
+  document.getElementById('copy-btn').addEventListener('click', function(){
+    var btn = this;
+    var text = document.getElementById('result-card').getAttribute('data-full') || '';
+    function done(){
+      var orig = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      setTimeout(function(){ btn.textContent = orig; }, 2000);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fallback(); });
+    } else { fallback(); }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch(e){}
+      document.body.removeChild(ta);
+    }
+  });
+})();
+
+document.getElementById('waitlist-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var email = document.getElementById('waitlist-email').value.trim();
+  var msg = document.getElementById('form-msg');
+  if(!email) return;
+  msg.textContent = 'Joining…';
+  fetch('https://formsubmit.co/ajax/88f3d93ab262b02bfe2f1d6b136ea07a', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+      plan: 'Not sure yet',
+      _subject: 'New NudgePay waitlist signup (generator tool): ' + email,
+      _template: 'table',
+      _captcha: 'false'
+    })
+  }).then(function(r){
+    if(r.ok){ msg.textContent = "You're on the list — we'll be in touch soon."; document.getElementById('waitlist-form').reset(); }
+    else { msg.textContent = 'Something went wrong — please try again.'; }
+  }).catch(function(){ msg.textContent = 'Something went wrong — please try again.'; });
+});
+</script>
+</body>
+</html>
