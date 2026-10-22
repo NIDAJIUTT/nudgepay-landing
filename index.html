@@ -90,6 +90,13 @@
   .success-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
   .counter-line{margin-top:14px;font-size:14px;color:var(--ink2)}
   .counter-line b{color:var(--teal)}
+  .referral-box{margin-top:16px;background:var(--amber-soft);border:1.5px solid var(--gold);border-radius:var(--radius);padding:18px 20px}
+  .referral-box h3{font-size:21px;margin-bottom:6px}
+  .referral-box p{margin:0 0 12px;color:var(--ink2);font-size:15.5px}
+  .ref-link-row{display:flex;gap:8px}
+  @media(max-width:560px){.ref-link-row{flex-direction:column}}
+  .ref-link-input{flex:1;min-width:0;padding:11px 12px;border:1.5px solid var(--line2);border-radius:10px;background:var(--surface);color:var(--ink);font-family:"JetBrains Mono",monospace;font-size:12.5px}
+  .referral-box.joined{background:var(--teal-soft);border-color:var(--teal);border-style:dashed}
 
   .hero-visual{position:relative}
   .hero-visual img{border-radius:22px;aspect-ratio:1200/627;object-fit:cover;box-shadow:var(--shadow-lg);width:100%}
@@ -241,6 +248,8 @@
 
         <div class="waitlist-box" id="join">
           <form class="waitlist-form" novalidate>
+            <input type="hidden" name="referrer" value="">
+            <input type="hidden" name="referral_code" value="">
             <label for="email-hero">Join the founding waitlist</label>
             <div class="form-row">
               <input type="email" id="email-hero" name="email" placeholder="you@yourstudio.com" autocomplete="email" required>
@@ -264,6 +273,14 @@
             </div>
           </form>
           <p class="counter-line"><b data-waitlist-count>0</b> <span data-waitlist-label>sign-up(s) from this page in this session</span> — the full waitlist count will be shared honestly in our first update email, not inflated here.</p>
+        </div>
+        <div class="referral-box" id="referral-box">
+          <h3 id="referral-heading">Get your first year free 🎁</h3>
+          <p id="referral-copy">Refer 3 freelancers who join the waitlist, and you'll get early beta access plus your first year of NudgePay free when we launch. Share your personal link:</p>
+          <div class="ref-link-row">
+            <input type="text" class="ref-link-input" readonly value="" aria-label="Your personal referral link">
+            <button type="button" class="btn btn-primary btn-sm ref-copy-btn">Copy link</button>
+          </div>
         </div>
       </div>
 
@@ -480,6 +497,8 @@
       </div>
       <div class="waitlist-box" style="margin-top:0">
         <form class="waitlist-form" novalidate>
+            <input type="hidden" name="referrer" value="">
+            <input type="hidden" name="referral_code" value="">
           <label>Join the founding waitlist</label>
           <div class="form-row" style="flex-direction:column">
             <input type="email" name="email" placeholder="you@yourstudio.com" autocomplete="email" required aria-label="Email address">
@@ -522,6 +541,41 @@
 (function(){
   // ---------- Waitlist (in-memory only, by design) ----------
   var waitlist = []; // {email, plan, at}
+  // ---------- Referral: capture ?ref=, own code, link decoration ----------
+  var NP_BASE = 'https://nidajiutt.github.io/nudgepay-landing/';
+  function npStore(k, v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k, v); }catch(e){ return null; } return null; }
+  var npParams = new URLSearchParams(window.location.search);
+  var npRefParam = npParams.get('ref');
+  if(npRefParam){ npStore('np_ref', npRefParam); }
+  var npReferrer = npStore('np_ref') || '';
+  var npCode = npStore('np_code');
+  if(!npCode){
+    var npChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', npRand = '';
+    for(var npi=0;npi<6;npi++){ npRand += npChars.charAt(Math.floor(Math.random()*npChars.length)); }
+    npCode = 'NP-' + npRand;
+    npStore('np_code', npCode);
+  }
+  var npMyLink = NP_BASE + '?ref=' + npCode;
+  if(npReferrer){
+    document.querySelectorAll('a[href]').forEach(function(a){
+      var href = a.getAttribute('href');
+      if(href==='index.html' || href==='./index.html' || href===NP_BASE || href===NP_BASE+'index.html'){
+        a.setAttribute('href', href + (href.indexOf('?')===-1 ? '?' : '&') + 'ref=' + encodeURIComponent(npReferrer));
+      }
+    });
+  }
+  function npShowJoined(){
+    var box = document.getElementById('referral-box');
+    if(!box) return;
+    box.classList.add('joined');
+    var h = document.getElementById('referral-heading'); if(h) h.textContent = "You're on the list! 🎉";
+    var c = document.getElementById('referral-copy'); if(c) c.innerHTML = 'Now share your link — <b>3 referrals = early beta access + your first year free</b> when we launch:';
+  }
+  function npFallbackCopy(done){
+    var inp = document.querySelector('.ref-link-input');
+    if(inp){ inp.focus(); inp.select(); try{ document.execCommand('copy'); }catch(e){} }
+    done();
+  }
   function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v||'').trim()); }
   function updateCounters(){
     document.querySelectorAll('[data-waitlist-count]').forEach(function(el){ el.textContent = waitlist.length; });
@@ -543,6 +597,18 @@
     var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
     clearTimeout(t._h); t._h = setTimeout(function(){ t.classList.remove('show'); }, 3400);
   };
+  // Referral UI wiring: hidden fields, personal link, copy buttons, ?joined=1 state
+  document.querySelectorAll('input[name=referrer]').forEach(function(el){ el.value = npReferrer; });
+  document.querySelectorAll('input[name=referral_code]').forEach(function(el){ el.value = npCode; });
+  document.querySelectorAll('.ref-link-input').forEach(function(el){ el.value = npMyLink; });
+  document.querySelectorAll('.ref-copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var done = function(){ var old = btn.textContent; btn.textContent = 'Copied ✓'; if(window.showToast) showToast('Referral link copied — share it with 3 freelancers!'); setTimeout(function(){ btn.textContent = old; }, 2200); };
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(npMyLink).then(done).catch(function(){ npFallbackCopy(done); }); }
+      else { npFallbackCopy(done); }
+    });
+  });
+  if(npParams.get('joined')==='1'){ npShowJoined(); }
   document.querySelectorAll('.waitlist-form').forEach(function(form){
     var emailInput = form.querySelector('input[type=email]');
     var planSelect = form.querySelector('select[name=plan]');
@@ -569,6 +635,8 @@
           body: JSON.stringify({
             email: email,
             plan: entry.plan,
+            referrer: npReferrer,
+            referral_code: npCode,
             _subject: 'New NudgePay waitlist signup: ' + email,
             _template: 'table',
             _captcha: 'false'
@@ -580,6 +648,9 @@
       form.querySelector('.success-email').textContent = email;
       form.querySelector('.success-pos').textContent = '#'+waitlist.length+' in this session';
       panel.classList.add('show');
+      npShowJoined();
+      var npBox = document.getElementById('referral-box');
+      if(npBox){ npBox.scrollIntoView({behavior:'smooth', block:'center'}); }
       // Mirror success to the other form's counter is handled by updateCounters; keep forms independent otherwise.
       showToast('Welcome to the NudgePay waitlist — '+email);
     });

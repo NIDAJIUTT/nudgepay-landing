@@ -412,5 +412,24 @@ document.getElementById('waitlist-form').addEventListener('submit', function(e){
   }).catch(function(){ msg.textContent = 'Something went wrong — please try again.'; });
 });
 </script>
+
+<script>
+// NudgePay referral: capture ?ref= and carry it back to the landing page.
+(function(){
+  try{
+    var ref = new URLSearchParams(window.location.search).get('ref');
+    if(ref){ localStorage.setItem('np_ref', ref); }
+    var saved = localStorage.getItem('np_ref');
+    if(saved){
+      document.querySelectorAll('a[href]').forEach(function(a){
+        var href = a.getAttribute('href');
+        if(href==='index.html' || href==='./index.html'){
+          a.setAttribute('href', href + '?ref=' + encodeURIComponent(saved));
+        }
+      });
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
